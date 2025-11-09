@@ -27,6 +27,26 @@ async fn index(name: web::Path<String>) -> Result<impl Responder> {
     };
     Ok(web::Json(obj))
 }
+// _____________ multiple params _______________
+#[derive(Serialize)]
+struct MyObjMultiple {
+    name: String,
+    price: String,
+    class: String,
+}
+
+#[get("/pet/{name}/{price}")]
+async fn multiple_params(path: web::Path<(String, String)>) -> Result<impl Responder> {
+    let (name, price) = path.into_inner();
+    let obj = MyObjMultiple {
+        name: name.to_string(),
+        price: price.to_string(),
+        class: String::from("godzilla"),
+    };
+    Ok(web::Json(obj))
+}
+
+// _____________ multiple params _______________
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -35,9 +55,11 @@ async fn main() -> std::io::Result<()> {
             .service(hello)
             .service(echo)
             .service(index)
+            .service(multiple_params)
             .route("/hey", web::get().to(manual_hello))
     })
     .bind(("127.0.0.1", 8080))?
     .run()
     .await
 }
+
