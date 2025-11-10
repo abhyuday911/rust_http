@@ -1,10 +1,13 @@
-use actix_web::{HttpResponse, Responder, cookie::Cookie, web::{self, Data}};
+use actix_web::{
+    HttpResponse, Responder,
+    cookie::Cookie,
+    web::{self, Data},
+};
 use bcrypt::{DEFAULT_COST, hash};
 use serde_json::json;
 use uuid::Uuid;
 
 use crate::{AppState, User};
-
 
 pub async fn sign_up(state: Data<AppState>, user_data: web::Json<User>) -> impl Responder {
     let mut users = state.users.lock().unwrap();

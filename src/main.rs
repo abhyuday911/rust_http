@@ -5,9 +5,9 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-use crate::controllers::v1::{index, sign_up};
+use crate::controllers::v1::{index, sign_in, sign_up};
 
-pub mod controllers{
+pub mod controllers {
     pub mod v1;
 }
 // use crate::controllers::{index, sign_up};
@@ -38,6 +38,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(state.clone())
             .route("/", web::get().to(index))
             .route("/signup", web::post().to(sign_up))
+            .route("/signin", web::post().to(sign_in))
     })
     .bind(("127.0.0.1", 8080))?
     .run()
