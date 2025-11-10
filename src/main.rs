@@ -5,8 +5,12 @@ use std::{
     sync::{Arc, Mutex},
 };
 
-pub mod controllers;
-use crate::controllers::{index, sign_up};
+use crate::controllers::v1::{index, sign_up};
+
+pub mod controllers{
+    pub mod v1;
+}
+// use crate::controllers::{index, sign_up};
 // user struct
 #[derive(Serialize, Deserialize, Clone)]
 pub struct User {

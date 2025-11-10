@@ -1,16 +1,10 @@
-use crate::{AppState, User};
-use actix_web::{
-    HttpResponse, Responder,
-    cookie::Cookie,
-    web::{self, Data},
-};
+use actix_web::{HttpResponse, Responder, cookie::Cookie, web::{self, Data}};
 use bcrypt::{DEFAULT_COST, hash};
 use serde_json::json;
 use uuid::Uuid;
 
-pub async fn index() -> impl Responder {
-    HttpResponse::Ok().body("welcome to the / route")
-}
+use crate::{AppState, User};
+
 
 pub async fn sign_up(state: Data<AppState>, user_data: web::Json<User>) -> impl Responder {
     let mut users = state.users.lock().unwrap();
@@ -55,8 +49,4 @@ pub async fn sign_up(state: Data<AppState>, user_data: web::Json<User>) -> impl 
     users.insert(user_data.username.clone(), new_user);
 
     HttpResponse::Ok().cookie(cookie).json(json!(*users))
-}
-
-pub async fn sign_in() -> impl Responder {
-    HttpResponse::Ok().body("sign_in route")
 }
