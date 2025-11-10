@@ -10,6 +10,7 @@ use crate::controllers::{index, sign_up};
 // user struct
 #[derive(Serialize, Deserialize, Clone)]
 pub struct User {
+    username: String,
     name: String,
     password: String,
     age: u8,
@@ -18,12 +19,14 @@ pub struct User {
 #[derive(Clone)]
 pub struct AppState {
     users: Arc<Mutex<HashMap<String, User>>>, // hashmap will have key of usename and value will be user details
+    session_ids: Arc<Mutex<HashMap<String, String>>>,
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let state = web::Data::new(AppState {
         users: Arc::new(Mutex::new(HashMap::new())),
+        session_ids: Arc::new(Mutex::new(HashMap::new())),
     });
 
     HttpServer::new(move || {
